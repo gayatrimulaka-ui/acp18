@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Our Solar System</title>
+
+        <style>
+
+            body {
+                background-color:darkviolet; 
+                color:lavender;
+                font-family: Arial, sans-serif;
+
+                
+            }
+
+
+
+
+
+
+             body {
+            margin: 0;
+            height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+        .spot {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+
+
+
+
+ body {
+    margin: 0;
+    background-color: #020208;
+    overflow-x: auto; /* Allows scrolling left-to-right to see all planets */
+    overflow-y: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .space-container {
+    position: relative;
+    min-width: 2600px; /* Ensures wide layout canvas for all 8 planets */
+    height: 100vh;
+    background-image: radial-gradient(circle at 0% 50%, #1a150d 0%, #020208 60%);
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+  }
+
+  /* The Sun peeking from the left edge */
+  .sun {
+    position: absolute;
+    left: -250px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 100% 50%, #ffffff 0%, #ffcc00 50%, #ff3300 100%);
+    box-shadow: 0 0 100px 30px rgba(255, 153, 0, 0.6);
+    z-index: 10;
+  }
+
+  /* Planet Container clips the moving texture */
+  .planet-container {
+    position: absolute;
+    border-radius: 50%;
+    overflow: hidden; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Moving texture layer underneath */
+  .planet-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%; 
+    height: 100%;
+    animation: spin 20s linear infinite;
+  }
+
+  /* 3D Light Mask: Light source is now locked to the Left (where the Sun is) */
+  .planet-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 15% 50%, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.98) 75%);
+    z-index: 2;
+  }
+
+  /* Saturn's flat 3D rings */
+  .saturn-rings {
+    position: absolute;
+    width: 240px;
+    height: 40px;
+    border: 15px solid rgba(194, 174, 142, 0.6);
+    border-radius: 50%;
+    transform: rotate(-15deg);
+    z-index: 1; /* Sits below the shadow layer but wraps around */
+    pointer-events: none;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  @keyframes spin {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+
+        </style>
+
+    </head>
+    <body>
+        <h1 class="body">Solar system</h1>
+
+        <div class="space-container" id="space">
+            <div class="sun"></div>
+        </div>
+
+
+
+
+        <script>
+            const count = 150; // Number of spots
+            const body = document.body;
+
+            for (let i = 0; i < count; i++) {
+                const spot = document.createElement('div');
+                spot.classList.add('spot');
+
+                // Randomize size, position, and opacity
+                const size = Math.random() * 3 + 1; // 1px to 4px
+                const x = Math.random() * 100; // 0% to 100%
+                const y = Math.random() * 100; // 0% to 100%
+                const opacity = Math.random() * 0.5 + 0.5; // 0.5 to 1.0
+
+                spot.style.width = `${size}px`;
+                spot.style.height = `${size}px`;
+                spot.style.left = `${x}%`;
+                spot.style.top = `${y}%`;
+                spot.style.opacity = opacity;
+
+                body.appendChild(spot);
+            }
+
+
+
+
+
+
+
+
+
+             const space = document.getElementById('space');
+
+                // Real data-driven profile for our solar system (ordered by distance from Sun)
+                const solarSystemData = [
+                    { name: "Mercury", size: 22, dist: 220, speed: 12, glow: "rgba(160,160,160,0.3)", texture: "linear-gradient(90deg, #6e6e6e 0%, #9c9c9c 25%, #525252 50%, #6e6e6e 75%, #9c9c9c 100%)" },
+                    { name: "Venus", size: 40, dist: 360, speed: 28, glow: "rgba(224,184,112,0.4)", texture: "linear-gradient(90deg, #b8860b 0%, #e3af53 25%, #8b6508 50%, #b8860b 75%, #e3af53 100%)" },
+                    { name: "Earth", size: 44, dist: 520, speed: 20, glow: "rgba(50,150,255,0.4)", texture: "linear-gradient(90deg, #1b4d3e 0%, #2a6f97 25%, #012a4a 50%, #1b4d3e 75%, #2a6f97 100%)" },
+                    { name: "Mars", size: 30, dist: 680, speed: 22, glow: "rgba(200,80,50,0.4)", texture: "linear-gradient(90deg, #a83e26 0%, #cf6a4d 25%, #782414 50%, #a83e26 75%, #cf6a4d 100%)" },
+                    { name: "Jupiter", size: 140, dist: 940, speed: 14, glow: "rgba(210,180,140,0.3)", texture: "linear-gradient(90deg, #9c6c4c 0%, #e3ba93 25%, #bd8b61 50%, #9c6c4c 75%, #e3ba93 100%)" },
+                    { name: "Saturn", size: 110, dist: 1300, speed: 16, glow: "rgba(230,210,170,0.3)", texture: "linear-gradient(90deg, #dad0a6 0%, #f0e6b2 25%, #b5ab7b 50%, #dad0a6 75%, #f0e6b2 100%)", hasRings: true },
+                    { name: "Uranus", size: 70, dist: 1640, speed: 25, glow: "rgba(150,220,240,0.4)", texture: "linear-gradient(90deg, #70b8c4 0%, #9be5f2 25%, #4d8c96 50%, #70b8c4 75%, #9be5f2 100%)" },
+                    { name: "Neptune", size: 66, dist: 1940, speed: 24, glow: "rgba(50,100,220,0.4)", texture: "linear-gradient(90deg, #2b5c8f 0%, #4d8cc4 25%, #1a3c63 50%, #2b5c8f 75%, #4d8cc4 100%)" }
+                ];
+
+                solarSystemData.forEach(data => {
+                    // Outer position wrapper
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'absolute';
+                    wrapper.style.left = `${data.dist}px`;
+                    wrapper.style.top = '50%';
+                    wrapper.style.transform = 'translateY(-50%)';
+                    wrapper.style.display = 'flex';
+                    wrapper.style.alignItems = 'center';
+                    wrapper.style.justifyContent = 'center';
+
+                    // 1. Create planet body
+                    const planet = document.createElement('div');
+                    planet.className = 'planet-container';
+                    planet.style.width = `${data.size}px`;
+                    planet.style.height = `${data.size}px`;
+                    planet.style.boxShadow = `0 0 35px 8px ${data.glow}, inset -5px 0 15px rgba(255,255,255,0.1)`;
+
+                    // 2. Moving texture layer
+                    const textureLayer = document.createElement('div');
+                    textureLayer.className = 'planet-texture';
+                    textureLayer.style.backgroundImage = data.texture;
+                    textureLayer.style.animationDuration = `${data.speed}s`;
+
+                    // 3. Static shadow mask (facing away from the Sun on the left)
+                    const shadowLayer = document.createElement('div');
+                    shadowLayer.className = 'planet-shadow';
+
+                    // Assemble Planet
+                    planet.appendChild(textureLayer);
+                    planet.appendChild(shadowLayer);
+                    wrapper.appendChild(planet);
+
+                    // Add Saturn's ring system separate from clipping container
+                    if (data.hasRings) {
+                        const rings = document.createElement('div');
+                        rings.className = 'saturn-rings';
+                        // Scale ring size relative to Saturn's dynamic size
+                        rings.style.width = `${data.size * 2.1}px`;
+                        rings.style.height = `${data.size * 0.4}px`;
+                        wrapper.appendChild(rings);
+                    }
+
+                    space.appendChild(wrapper);
+                });
+        </script>
+
+
+
+
+    </body>
+</html>
